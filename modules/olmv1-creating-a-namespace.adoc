@@ -15,7 +15,7 @@ Before you create a service account to install and manage your cluster extension
 
 .Procedure
 
-* Create a new namespace for the service account of the extension you want to install by running the following command:
+* Create a new namespace for the service account of the extension that you want to install by running the following command:
 +
 [source,terminal]
 ----

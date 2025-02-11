@@ -11,7 +11,7 @@ You can install an extension from a catalog by creating a custom resource (CR) a
 
 .Prerequisites
 
-* You have created a service account and assigned enough role-based access controls (RBAC) to install, update, and manage the extension you want to install. For more information, see "Cluster extension permissions".
+* You have created a service account and assigned enough role-based access controls (RBAC) to install, update, and manage the extension that you want to install. For more information, see "Cluster extension permissions".
 
 .Procedure
 

@@ -9,6 +9,16 @@
 
 After you have created a service account and cluster role, you must bind the cluster role to the service account with a cluster role binding manifest.
 
+.Prerequisites
+
+* Access to an {product-title} cluster using an account with `cluster-admin` permissions.
+* You have created and applied the following resources for the extension you want to install:
+** Namespace
+** Service account
+** Cluster role
+
+.Procedure
+
 . Create a cluster role binding to bind the cluster role to the service account, similar to the following example:
 +
 [source,yaml]
