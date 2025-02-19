@@ -10,13 +10,13 @@ When you specify the cluster extension you want to install in a custom resource 
 
 You can perform the following actions to control the selection of catalog content:
 
-* Specify labels to select the catalog
-* Use match expressions to perform complex filtering across catalogs
-* Set catalog priority
+* Specify labels to select the catalog.
+* Use match expressions to perform complex filtering across catalogs.
+* Set catalog priority.
 
-If you do not specify any catalog selection criteria, {olmv1-first} might select from any available catalog on the cluster that provides the requested package.
+If you do not specify any catalog selection criteria, {olmv1-first} selects an extension from any available catalog on the cluster that provides the requested package.
 
-By default, bundles that are not deprecated are preferred over deprecated bundles during resolution.
+During resolution, bundles that are not deprecated are preferred over deprecated bundles by default.
 
 include::modules/olmv1-catalog-selection-by-name.adoc[leveloffset=1]
 include::modules/olmv1-catalog-selection-by-labels-or-expressions.adoc[leveloffset=1]

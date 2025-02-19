@@ -10,6 +10,6 @@ If bundle resolution fails because of ambiguity or because no catalog is selecte
 
 Perform the following actions to troubleshoot catalog selection errors:
 
-* Refine your selection criteria using labels or expressions
-* Adjust your catalog priorities
-* Ensure that only one bundle matches your package name and version requirements
+* Refine your selection criteria using labels or expressions.
+* Adjust your catalog priorities.
+* Ensure that only one bundle matches your package name and version requirements.
