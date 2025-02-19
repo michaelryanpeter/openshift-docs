@@ -118,7 +118,7 @@ items:
     - olm.operatorframework.io/cleanup-unpack-cache
     - olm.operatorframework.io/cleanup-contentmanager-cache
     generation: 1
-    name: pipes
+    name: pipelines-operator
     resourceVersion: "72725"
     uid: e18b13fb-a96d-436f-be75-a9a0f2b07993
   spec:
@@ -187,14 +187,19 @@ metadata:
 .Example `pipelines-operator.yaml` CR
 [source,yaml]
 ----
-apiVersion: olm.operatorframework.io/v1alpha1
+apiVersion: olm.operatorframework.io/v1
 kind: ClusterExtension
 metadata:
   name: pipelines-operator
 spec:
-  packageName: openshift-pipelines-operator-rh
-  installNamespace: <namespace>
-  version: "1.15.0" <1>
+  namespace: pipelines
+  serviceAccount:
+    name: pipelines-installer
+  source:
+    sourceType: Catalog
+    catalog:
+      packageName: openshift-pipelines-operator-rh
+      version: "1.15.0" <1>
 ----
 <1> Update the version from `1.14.x` to `1.15.0`
 
@@ -203,14 +208,19 @@ spec:
 .Example CR with a version range specified
 [source,yaml]
 ----
-apiVersion: olm.operatorframework.io/v1alpha1
+apiVersion: olm.operatorframework.io/v1
 kind: ClusterExtension
 metadata:
   name: pipelines-operator
 spec:
-  packageName: openshift-pipelines-operator-rh
-  installNamespace: <namespace>
-  version: ">1.15, <1.17" <1>
+  namespace: pipelines
+  serviceAccount:
+    name: pipelines-installer
+  source:
+    sourceType: Catalog
+    catalog:
+      packageName: openshift-pipelines-operator-rh
+      version: ">1.15, <1.17" <1>
 ----
 <1> Specifies that the desired version range is greater than version `1.15` and less than `1.17`. For more information, see "Support for version ranges" and "Version comparison strings".
 
@@ -219,31 +229,43 @@ spec:
 .Example CR with a specified channel
 [source,yaml]
 ----
-apiVersion: olm.operatorframework.io/v1alpha1
+apiVersion: olm.operatorframework.io/v1
 kind: ClusterExtension
 metadata:
   name: pipelines-operator
 spec:
-  packageName: openshift-pipelines-operator-rh
-  installNamespace: <namespace>
-  channel: lastest <1>
+  namespace: pipelines
+  serviceAccount:
+    name: pipelines-installer
+  source:
+    sourceType: Catalog
+    catalog:
+      packageName: openshift-pipelines-operator-rh
+      channels:
+        - latest <1>
 ----
-<1> Installs the latest release that can be resolved from the specified channel. Updates to the channel are automatically installed.
+<1> Installs the latest release that can be resolved from the specified channel. Updates to the channel are automatically installed. Enter values as an array.
 
 ** If you want to specify a channel and version or version range, edit your CR similar to the following example:
 +
 .Example CR with a specified channel and version range
 [source,yaml]
 ----
-apiVersion: olm.operatorframework.io/v1alpha1
+apiVersion: olm.operatorframework.io/v1
 kind: ClusterExtension
 metadata:
   name: pipelines-operator
 spec:
-  packageName: openshift-pipelines-operator-rh
-  installNamespace: <namespace>
-  channel: latest
-  version: "<1.16"
+  namespace: pipelines
+  serviceAccount:
+    name: pipelines-installer
+  source:
+    sourceType: Catalog
+    catalog:
+      packageName: openshift-pipelines-operator-rh
+      channels:
+        - latest
+      version: "<1.16"
 ----
 +
 For more information, see "Example custom resources (CRs) that specify a target version".
@@ -258,7 +280,7 @@ $ oc apply -f pipelines-operator.yaml
 .Example output
 [source,text]
 ----
-clusterextension.olm.operatorframework.io/pipes configured
+clusterextension.olm.operatorframework.io/pipelines-operator configured
 ----
 
 .Verification

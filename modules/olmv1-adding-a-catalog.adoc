@@ -30,7 +30,7 @@ spec:
 ----
 <1> The catalog is automatically labeled with the value of the `metadata.name` field when it is applied to the cluster. For more information about labels and catalog selection, see "Catalog content resolution".
 <2> Optional: Specify the priority of the catalog in relation to the other catalogs on the cluster. For more information, see "Catalog selection by priority".
-<3> Specify the interval in minutes for polling the remote registry for newer image digests. The default value is `10`. To disable polling, set a zero value.
+<3> Specify the interval in minutes for polling the remote registry for newer image digests. To disable polling, do not set the field.
 <4> Specify the catalog's image in the `spec.source.image.ref` field.
 
 . Add the catalog to your cluster by running the following command:
