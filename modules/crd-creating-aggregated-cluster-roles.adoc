@@ -51,15 +51,18 @@ rules:
   resources: ["crontabs"] <6>
   verbs: ["get", "list", "watch"] <7>
 ----
-<1> Use the `rbac.authorization.k8s.io/v1` API.
-<2> Specify a name for the definition.
-<3> Specify this label to grant permissions to the admin default role.
-<4> Specify this label to grant permissions to the edit default role.
-<5> Specify the group name of the CRD.
-<6> Specify the plural name of the CRD that these rules apply to.
-<7> Specify the verbs that represent the permissions that are granted to the role. For example, apply read and write permissions to the `admin` and `edit` roles and only read permission to the `view` role.
-<8> Specify this label to grant permissions to the `view` default role.
-<9> Specify this label to grant permissions to the `cluster-reader` default role.
++
+where:
++
+<1> `apiVersion`:: Specifies the `rbac.authorization.k8s.io/v1` API version.
+<2> `metadata.name`:: Specifies a name for the definition.
+<3> `rbac.authorization.k8s.io/aggregate-to-admin`:: Specifies this label to grant permissions to the admin default role.
+<4> `rbac.authorization.k8s.io/aggregate-to-edit`:: Specifies this label to grant permissions to the edit default role.
+<5> `rules.apiGroups`:: Specifies the group name of the CRD.
+<6> `rules.resources`:: Specifies the plural name of the CRD that these rules apply to.
+<7> `rules.verbs`:: Specifies the verbs that represent the permissions that are granted to the role. For example, apply read and write permissions to the `admin` and `edit` roles and only read permission to the `view` role.
+<8> `rbac.authorization.k8s.io/aggregate-to-view`:: Specifies this label to grant permissions to the `view` default role.
+<9> `rbac.authorization.k8s.io/aggregate-to-cluster-reader`:: Specifies this label to grant permissions to the `cluster-reader` default role.
 
 . Create the cluster role:
 +

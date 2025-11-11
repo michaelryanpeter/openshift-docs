@@ -62,7 +62,7 @@ EOF
 $ cat <<EOF | oc create -f -
 apiVersion: v1
 kind: Secret
-type: kubernetes.io/service-account-token <1>
+type: kubernetes.io/service-account-token
 metadata:
   name: scoped
   namespace: scoped
@@ -70,7 +70,7 @@ metadata:
     kubernetes.io/service-account.name: scoped
 EOF
 ----
-<1> The secret must be a long-lived API token, which is used by the service account.
+The `Secret` object must be a long-lived API token type, which is used by the service account.
 ====
 
 .. Create a role by running the following command.
@@ -127,12 +127,12 @@ metadata:
   name: scoped
   namespace: scoped
 spec:
-  serviceAccountName: scoped <1>
+  serviceAccountName: scoped
   targetNamespaces:
   - scoped
 EOF
 ----
-<1> Specify the service account created in the previous step. Any Operator installed in the designated namespace is tied to this Operator group and therefore to the service account specified.
+The `serviceAccountName` field specifies the service account created in the previous step. Any Operator installed in the designated namespace is tied to this `OperatorGroup` object and therefore to the service account specified.
 ====
 
 . Create a `Subscription` object in the designated namespace to install an Operator:
@@ -151,12 +151,14 @@ metadata:
 spec:
   channel: stable-v1
   name: openshift-cert-manager-operator
-  source: <catalog_source_name> <1>
-  sourceNamespace: <catalog_source_namespace> <2>
+  source: <catalog_source_name>
+  sourceNamespace: <catalog_source_namespace>
 EOF
 ----
-<1> Specify a catalog source that already exists in the designated namespace or one that is in the global catalog namespace, for example `redhat-operators`.
-<2> Specify a namespace where the catalog source was created, for example `openshift-marketplace` for the `redhat-operators` catalog.
+where:
+
+`<catalog_source_name>`:: Specifies a catalog source that already exists in the designated namespace or one that is in the global catalog namespace, for example `redhat-operators`.
+`<catalog_source_namespace>`:: Specifies a namespace where the catalog source was created, for example `openshift-marketplace` for the `redhat-operators` catalog.
 ====
 +
 Any Operator tied to this Operator group is confined to the permissions granted to the specified service account. If the Operator requests permissions that are outside the scope of the service account, the installation fails with relevant errors.

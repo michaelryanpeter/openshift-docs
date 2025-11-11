@@ -26,9 +26,10 @@ $ oc exec operator-pod -n <namespace_name> \
 [source,terminal]
 ----
 $ oc exec operator-pod -n <namespace_name> \
-    -- cat /<path>/<to>/<secret_name> <1>
+    -- cat /<path>/<to>/<secret_name>
 ----
-<1> Do not use root for the path.
++
+Do not use root for the path.
 
 . Try assuming the role with the web identity token:
 +

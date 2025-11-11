@@ -35,20 +35,20 @@ rules:
 - apiGroups: ["rbac.authorization.k8s.io"]
   resources: ["roles", "rolebindings"]
   verbs: ["get", "create", "update", "patch"]
-- apiGroups: ["apps"] <1>
+- apiGroups: ["apps"]
   resources: ["deployments"]
   verbs: ["list", "watch", "get", "create", "update", "patch", "delete"]
-- apiGroups: [""] <1>
+- apiGroups: [""]
   resources: ["pods"]
   verbs: ["list", "watch", "get", "create", "update", "patch", "delete"]
 ----
-<1> Add permissions to create other resources, such as deployments and pods shown here.
+Add permissions to create other resources, such as deployments and pods shown here.
 
 In addition, if any Operator specifies a pull secret, the following permissions must also be added:
 
 [source,yaml,subs="+macros"]
 ----
-kind: ClusterRole <1>
+kind: ClusterRole
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
@@ -60,4 +60,4 @@ rules:
   resources: ["secrets"]
   verbs: ["create", "update", "patch"]
 ----
-<1> Required to get the secret from the OLM namespace.
+The `ClusterRole` object is required to get the secret from the OLM namespace.

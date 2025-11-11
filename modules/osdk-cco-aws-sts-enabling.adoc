@@ -232,7 +232,7 @@ if err := c.Create(context.TODO(), credReq); err != nil {
 // It returns the secret object or an error if the timeout is exceeded
 func WaitForSecret(client kubernetes.Interface, namespace, name string) (*v1.Secret, error) {
   // set a timeout of 10 minutes
-  timeout := time.After(10 * time.Minute) <1>
+  timeout := time.After(10 * time.Minute)
 
   // set a polling interval of 10 seconds
   ticker := time.NewTicker(10 * time.Second)
@@ -263,7 +263,8 @@ func WaitForSecret(client kubernetes.Interface, namespace, name string) (*v1.Sec
   }
 }
 ----
-<1> The `timeout` value is based on an estimate of how fast the CCO might detect an added `CredentialsRequest` object and generate a `Secret` object. You might consider lowering the time or creating custom feedback for cluster administrators that could be wondering why the Operator is not yet accessing the cloud resources.
++
+The `timeout` value is based on an estimate of how fast the CCO might detect an added `CredentialsRequest` object and generate a `Secret` object. You might consider lowering the time or creating custom feedback for cluster administrators that could be wondering why the Operator is not yet accessing the cloud resources.
 ====
 
 .. Set up the AWS configuration by reading the secret created by the CCO from the credentials request and creating the AWS config file containing the data from that secret:

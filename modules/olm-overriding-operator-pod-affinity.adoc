@@ -74,7 +74,7 @@ spec:
   sourceNamespace: operator-registries
   config:
     affinity:
-      nodeAffinity: <1>
+      nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
           - matchExpressions:
@@ -84,7 +84,7 @@ spec:
               - ip-10-0-163-94.us-west-2.compute.internal
 #...
 ----
-<1> A node affinity that requires the Operator's pod to be scheduled on a node named `ip-10-0-163-94.us-west-2.compute.internal`.
+The `nodeAffinity` field defines a node affinity that requires the Operator's pod to be scheduled on a node named `ip-10-0-163-94.us-west-2.compute.internal`.
 
 .Node affinity example that places the Operator pod on a node with a specific platform
 [source,yaml]
@@ -100,7 +100,7 @@ spec:
   sourceNamespace: operator-registries
   config:
     affinity:
-      nodeAffinity: <1>
+      nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
           - matchExpressions:
@@ -114,7 +114,7 @@ spec:
               - linux
 #...
 ----
-<1> A node affinity that requires the Operator's pod to be scheduled on a node with the `kubernetes.io/arch=arm64` and `kubernetes.io/os=linux` labels.
+The `nodeAffinity` field defines a node affinity that requires the Operator's pod to be scheduled on a node with the `kubernetes.io/arch=arm64` and `kubernetes.io/os=linux` labels.
 endif::pod[]
 
 ifdef::pod[]
@@ -136,7 +136,7 @@ spec:
   sourceNamespace: operator-registries
   config:
     affinity:
-      podAffinity: <1>
+      podAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
             matchExpressions:
@@ -147,7 +147,7 @@ spec:
           topologyKey: kubernetes.io/hostname
 #...
 ----
-<1> A pod affinity that places the Operator's pod on a node that has pods with the `app=test` label.
+The `podAffinity` field defines a pod affinity that places the Operator's pod on a node that has pods with the `app=test` label.
 
 .Pod anti-affinity example that prevents the Operator pod from one or more specific nodes
 [source,yaml]
@@ -163,7 +163,7 @@ spec:
   sourceNamespace: operator-registries
   config:
     affinity:
-      podAntiAffinity: <1>
+      podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
             matchExpressions:
@@ -174,7 +174,7 @@ spec:
           topologyKey: kubernetes.io/hostname
 #...
 ----
-<1> A pod anti-affinity that prevents the Operator's pod from being scheduled on a node that has pods with the `cpu=high` label.
+The `podAntiAffinity` field defines a pod anti-affinity that prevents the Operator's pod from being scheduled on a node that has pods with the `cpu=high` label.
 endif::node[]
 
 .Procedure
@@ -201,7 +201,7 @@ spec:
   source: my-operators
   sourceNamespace: operator-registries
   config:
-    affinity: <1>
+    affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
@@ -212,7 +212,7 @@ spec:
               - ip-10-0-185-229.ec2.internal
 #...
 ----
-<1> Add a `nodeAffinity`, `podAffinity`, or `podAntiAffinity`. See the Additional resources section that follows for information about creating the affinity.
+Add a `nodeAffinity`, `podAffinity`, or `podAntiAffinity`. See the Additional resources section that follows for information about creating the affinity.
 endif::oplm[]
 
 ifdef::node[]
@@ -228,7 +228,7 @@ spec:
   source: my-operators
   sourceNamespace: operator-registries
   config:
-    affinity: <1>
+    affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
@@ -239,7 +239,7 @@ spec:
               - ip-10-0-185-229.ec2.internal
 #...
 ----
-<1> Add a `nodeAffinity`.
+Add a `nodeAffinity`.
 endif::node[]
 
 endif::pod[]
@@ -258,7 +258,7 @@ spec:
   sourceNamespace: operator-registries
   config:
     affinity:
-      podAntiAffinity: <1>
+      podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           podAffinityTerm:
             labelSelector:
@@ -270,7 +270,7 @@ spec:
             topologyKey: topology.kubernetes.io/zone
 #...
 ----
-<1> Add a `podAffinity` or `podAntiAffinity`.
+Add a `podAffinity` or `podAntiAffinity`.
 endif::pod[]
 
 .Verification

@@ -90,10 +90,10 @@ $ oc describe packagemanifests <operator_name> -n openshift-marketplace
 # ...
 Kind:         PackageManifest
 # ...
-      Install Modes: <1>
+      Install Modes:
         Supported:  true
         Type:       OwnNamespace
-        Supported:  true 
+        Supported:  true
         Type:       SingleNamespace
         Supported:  false
         Type:       MultiNamespace
@@ -105,19 +105,22 @@ Kind:         PackageManifest
       Version:    3.7.11
       Name:       example-operator.v3.7.10
       Version:    3.7.10
-    Name:         stable-3.7 <2>
+    Name:         stable-3.7
 # ...
    Entries:
       Name:         example-operator.v3.8.5
       Version:      3.8.5
       Name:         example-operator.v3.8.4
       Version:      3.8.4
-    Name:           stable-3.8 <2>
-  Default Channel:  stable-3.8 <3>
+    Name:           stable-3.8
+  Default Channel:  stable-3.8
 ----
-<1> Indicates which install modes are supported.
-<2> Example channel names.
-<3> The channel selected by default if one is not specified.
++
+* `Install Modes` indicates which install modes are supported.
++
+* `Name` under a channel's entries shows example channel names.
++
+* `Default Channel` shows the channel selected by default if one is not specified.
 ====
 +
 [TIP]
@@ -166,12 +169,12 @@ apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
   name: <operatorgroup_name>
-  namespace: <namespace> <1>
+  namespace: <namespace>
 spec:
   targetNamespaces:
-  - <namespace> <1>
+  - <namespace>
 ----
-<1> For `SingleNamespace` install mode, use the same `<namespace>` value for both the `metadata.namespace` and `spec.targetNamespaces` fields.
+For `SingleNamespace` install mode, use the same `<namespace>` value for both the `metadata.namespace` and `spec.targetNamespaces` fields.
 +
 .. Create the `OperatorGroup` object:
 +
@@ -198,50 +201,52 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: <subscription_name>
-  namespace: <namespace_per_install_mode> <1>
+  namespace: <namespace_per_install_mode>
 spec:
-  channel: <channel_name> <2>
-  name: <operator_name> <3>
-  source: <catalog_name> <4>
-  sourceNamespace: <catalog_source_namespace> <5>
+  channel: <channel_name>
+  name: <operator_name>
+  source: <catalog_name>
+  sourceNamespace: <catalog_source_namespace>
   config:
-    env: <6>
+    env:
     - name: ARGS
       value: "-v=10"
-    envFrom: <7>
+    envFrom:
     - secretRef:
         name: license-secret
-    volumes: <8>
+    volumes:
     - name: <volume_name>
       configMap:
         name: <configmap_name>
-    volumeMounts: <9>
+    volumeMounts:
     - mountPath: <directory_name>
       name: <volume_name>
-    tolerations: <10>
+    tolerations:
     - operator: "Exists"
-    resources: <11>
+    resources:
       requests:
         memory: "64Mi"
         cpu: "250m"
       limits:
         memory: "128Mi"
         cpu: "500m"
-    nodeSelector: <12>
+    nodeSelector:
       foo: bar
 ----
-<1> For default `AllNamespaces` install mode usage, specify the `openshift-operators` namespace. Alternatively, you can specify a custom global namespace, if you have created one. For `SingleNamespace` install mode usage, specify the relevant single namespace.
-<2> Name of the channel to subscribe to.
-<3> Name of the Operator to subscribe to.
-<4> Name of the catalog source that provides the Operator.
-<5> Namespace of the catalog source. Use `openshift-marketplace` for the default software catalog sources.
-<6> The `env` parameter defines a list of environment variables that must exist in all containers in the pod created by OLM.
-<7> The `envFrom` parameter defines a list of sources to populate environment variables in the container.
-<8> The `volumes` parameter defines a list of volumes that must exist on the pod created by OLM.
-<9> The `volumeMounts` parameter defines a list of volume mounts that must exist in all containers in the pod created by OLM. If a `volumeMount` references a `volume` that does not exist, OLM fails to deploy the Operator.
-<10> The `tolerations` parameter defines a list of tolerations for the pod created by OLM.
-<11> The `resources` parameter defines resource constraints for all the containers in the pod created by OLM.
-<12> The `nodeSelector` parameter defines a `NodeSelector` for the pod created by OLM.
+where:
+
+`<namespace_per_install_mode>`:: Specifies the namespace for the subscription. For default `AllNamespaces` install mode usage, specify the `openshift-operators` namespace. Alternatively, you can specify a custom global namespace, if you have created one. For `SingleNamespace` install mode usage, specify the relevant single namespace.
+`<channel_name>`:: Specifies the name of the channel to subscribe to.
+`<operator_name>`:: Specifies the name of the Operator to subscribe to.
+`<catalog_name>`:: Specifies the name of the catalog source that provides the Operator.
+`<catalog_source_namespace>`:: Specifies the namespace of the catalog source. Use `openshift-marketplace` for the default software catalog sources.
+`env`:: Specifies a list of environment variables that must exist in all containers in the pod created by OLM.
+`envFrom`:: Specifies a list of sources to populate environment variables in the container.
+`volumes`:: Specifies a list of volumes that must exist on the pod created by OLM.
+`volumeMounts`:: Specifies a list of volume mounts that must exist in all containers in the pod created by OLM. If a `volumeMount` references a `volume` that does not exist, OLM fails to deploy the Operator.
+`tolerations`:: Specifies a list of tolerations for the pod created by OLM.
+`resources`:: Specifies resource constraints for all the containers in the pod created by OLM.
+`nodeSelector`:: Specifies a `NodeSelector` object for the pod created by OLM.
 ====
 +
 .Example `Subscription` object with a specific starting Operator version
@@ -256,14 +261,16 @@ metadata:
   namespace: example-operator
 spec:
   channel: stable-3.7
-  installPlanApproval: Manual <1>
+  installPlanApproval: Manual
   name: example-operator
   source: custom-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: example-operator.v3.7.10 <2>
+  startingCSV: example-operator.v3.7.10
 ----
-<1> Set the approval strategy to `Manual` in case your specified version is superseded by a later version in the catalog. This plan prevents an automatic upgrade to a later version and requires manual approval before the starting CSV can complete the installation.
-<2> Set a specific version of an Operator CSV.
+where:
+
+`installPlanApproval`:: Specifies the approval strategy. Set to `Manual` in case your specified version is superseded by a later version in the catalog. This plan prevents an automatic upgrade to a later version and requires manual approval before the starting CSV can complete the installation.
+`startingCSV`:: Specifies a specific version of an Operator CSV.
 ====
 +
 .. For clusters on cloud providers with token authentication enabled, such as {aws-first} {sts-first}, {entra-first}, or {gcp-wid-first}, configure your `Subscription` object by following these steps:
@@ -278,9 +285,9 @@ spec:
 kind: Subscription
 # ...
 spec:
-  installPlanApproval: Manual <1>
+  installPlanApproval: Manual
 ----
-<1> Subscriptions with automatic approvals for updates are not recommended because there might be permission changes to make before updating. Subscriptions with manual approvals for updates ensure that administrators have the opportunity to verify the permissions of the later version, take any necessary steps, and then update.
+Subscriptions with automatic approvals for updates are not recommended because there might be permission changes to make before updating. Subscriptions with manual approvals for updates ensure that administrators have the opportunity to verify the permissions of the later version, take any necessary steps, and then update.
 ====
 +
 ... Include the relevant cloud provider-specific fields in the `Subscription` object's `config` section:
@@ -298,9 +305,9 @@ spec:
   config:
     env:
     - name: ROLEARN
-      value: "<role_arn>" <1>
+      value: "<role_arn>"
 ----
-<1> Include the role ARN details.
+The `<role_arn>` variable specifies the role ARN details.
 ====
 +
 If the cluster is in {entra-short} mode, include the following fields:
@@ -316,15 +323,17 @@ spec:
  config:
    env:
    - name: CLIENTID
-     value: "<client_id>" <1>
+     value: "<client_id>"
    - name: TENANTID
-     value: "<tenant_id>" <2>
+     value: "<tenant_id>"
    - name: SUBSCRIPTIONID
-     value: "<subscription_id>" <3>
+     value: "<subscription_id>"
 ----
-<1> Include the client ID.
-<2> Include the tenant ID.
-<3> Include the subscription ID.
+where:
+
+`<client_id>`:: Specifies the client ID.
+`<tenant_id>`:: Specifies the tenant ID.
+`<subscription_id>`:: Specifies the subscription ID.
 ====
 +
 If the cluster is in {gcp-wid-short} mode, include the following fields:

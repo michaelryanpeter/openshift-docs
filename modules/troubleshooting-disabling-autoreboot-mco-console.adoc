@@ -46,10 +46,11 @@ kind: MachineConfigPool
 # ...
 spec:
 # ...
-  paused: true <1>
+  paused: true
 # ...
 ----
-<1> Update the `spec.paused` field to `true` to pause rebooting.
++
+Update the `spec.paused` field to `true` to pause rebooting.
 
 . To verify that the MCP is paused, return to the *MachineConfigPools* page.
 +
@@ -82,10 +83,11 @@ kind: MachineConfigPool
 # ...
 spec:
 # ...
-  paused: false <1>
+  paused: false
 # ...
 ----
-<1> Update the `spec.paused` field to `false` to allow rebooting.
++
+Update the `spec.paused` field to `false` to allow rebooting.
 +
 [NOTE]
 ====
