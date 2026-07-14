@@ -16,9 +16,11 @@ The names of update channels in a subscription can differ between Operators, but
 You cannot change installed Operators to a channel that is older than the current channel.
 ====
 
-Red Hat Customer Portal Labs include an application that helps administrators prepare to update their Operators. See Additional resources.
+Red Hat Customer Portal Labs provide tools that help administrators prepare to update their Operators.
+
+You can use these tools to search for Operators and verify the available Operator versions per update channel across different releases of {product-title}. Operators managed by Cluster Version Operator (CVO) are not included.
 
 [role="_additional-resources"]
 .Additional resources
 
-* link:https://access.redhat.com/labs/ocpouic/[Red Hat {product-title} Operator Update Information Checker]
+* link:https://access.redhat.com/labs/ocpouic/[{product-title} Operator Update Information Checker]
