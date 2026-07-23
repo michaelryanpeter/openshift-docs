@@ -7,7 +7,7 @@
 = Operator Framework
 
 [role="_abstract"]
-The Operator Framework is a set of open source tools for building, testing, delivering, and updating Operators in {product-title}. It includes Operator Lifecycle Manager, the Operator Registry, and the Software Catalog.
+The Operator Framework is a set of open source tools for building, testing, delivering, and updating Operators. It includes Operator Lifecycle Manager (OLM), the Operator Registry, and the software catalog.
 
 Operator Lifecycle Manager::
 Operator Lifecycle Manager (OLM) controls the installation, upgrade, and role-based access control (RBAC) of Operators in a cluster. It is deployed by default in 

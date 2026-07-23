@@ -7,7 +7,7 @@ include::_attributes/common-attributes.adoc[]
 toc::[]
 
 [role="_abstract"]
-You can learn how Operator Lifecycle Manager (OLM) components interact to manage Operators in {product-title}. The architecture includes the OLM Operator, catalog Operator, and catalog registry.
+You can learn how Operator Lifecycle Manager (OLM) components interact to manage Operators in {product-title}. The architecture includes the OLM Operator, Catalog Operator, and Catalog Registry.
 
 include::modules/olm-architecture.adoc[leveloffset=+1]
 

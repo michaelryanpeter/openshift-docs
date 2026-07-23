@@ -7,7 +7,7 @@
 = olm.deprecations schema
 
 [role="_abstract"]
-The optional `olm.deprecations` schema defines deprecation information for packages, bundles, and channels in an Operator catalog on {product-title}. When you define this schema, the web console displays warning badges and deprecation messages in the software catalog.
+The optional `olm.deprecations` schema defines deprecation information for packages, bundles, and channels in an Operator catalog. When you define this schema, the web console displays warning badges and deprecation messages in the software catalog.
 
 An `olm.deprecations` schema entry contains one or more of the following `reference` types, which indicates the deprecation scope. After the Operator is installed, any specified messages can be viewed as status conditions on the related `Subscription` object.
 

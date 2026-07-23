@@ -7,7 +7,7 @@
 = Highlights
 
 [role="_abstract"]
-File-based catalogs are the latest plain text (JSON or YAML) catalog format for Operator Lifecycle Manager (OLM) on {product-title}. This format enables catalog editing, composability, and extensibility while remaining backwards compatible with earlier SQLite-based catalogs.
+File-based catalogs are the latest plain text (JSON or YAML) catalog format for Operator Lifecycle Manager (OLM). This format enables catalog editing, composability, and extensibility while remaining compatible with earlier SQLite-based catalogs.
 
 Editing::
 With file-based catalogs, users interacting with the contents of a catalog are able to make direct changes to the format and verify that their changes are valid. Because this format is plain text JSON or YAML, catalog maintainers can easily manipulate catalog metadata by hand or with widely known and supported JSON or YAML tooling, such as the `jq` CLI.

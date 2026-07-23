@@ -7,7 +7,7 @@
 = Why use Operators?
 
 [role="_abstract"]
-Operators package operational knowledge to automate application lifecycle tasks on Kubernetes. Using Operators in {product-title}, you gain repeatable installs, health checks, over-the-air updates, and shared expertise encoded in software.
+Operators package operational knowledge to automate application lifecycle tasks on Kubernetes. Operators provide repeatable installs, health checks, over-the-air updates, and shared expertise encoded in software.
 
 Why deploy on Kubernetes?::
 Kubernetes (and by extension, {product-title}) contains all of the primitives needed to build complex distributed systems – secret handling, load balancing, service discovery, autoscaling – that work across on-premise and cloud providers.

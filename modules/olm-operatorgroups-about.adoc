@@ -15,6 +15,6 @@ ifeval::["{context}" != "olm-understanding-olm"]
 endif::[]
 
 [role="_abstract"]
-An Operator group defines multitenant configuration for OLM-installed Operators through an `OperatorGroup` resource. It selects target namespaces and generates the required RBAC access for member Operators in {product-title}.
+An Operator group defines multitenant configuration for OLM-installed Operators through an `OperatorGroup` resource. It selects target namespaces where the required RBAC access is generated for member Operators in {product-title}.
 
 The set of target namespaces is provided by a comma-delimited string stored in the `olm.targetNamespaces` annotation of a cluster service version (CSV). This annotation is applied to the CSV instances of member Operators and is projected into their deployments.

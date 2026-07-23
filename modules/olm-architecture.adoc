@@ -15,12 +15,12 @@ endif::[]
 
 ifeval::["{context}" != "operator-reference"]
 [role="_abstract"]
-Operator Lifecycle Manager (OLM) in {product-title} consists of the OLM Operator and Catalog Operator, which manage the custom resources that drive Operator installation and updates. Each Operator creates Kubernetes resources and manages specific CRDs in the OLM framework.
+Operator Lifecycle Manager (OLM) is composed of the OLM Operator and Catalog Operator.
 endif::[]
 
 ifeval::["{context}" == "operator-reference"]
 [role="_abstract"]
-Operator Lifecycle Manager (OLM) and the Catalog Operator manage the following custom resource definitions (CRDs) in {product-title}. These resources define catalog sources, subscriptions, install plans, and cluster service versions for Operator lifecycle management.
+Operator Lifecycle Manager (OLM) and the Catalog Operator manage the following custom resource definitions (CRDs) that form the basis of the Operator Framework.
 
 endif::[]
 
