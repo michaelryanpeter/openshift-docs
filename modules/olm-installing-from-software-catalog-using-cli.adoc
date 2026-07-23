@@ -227,7 +227,7 @@ spec:
 +
 where:
 
-`metadata.namespace`:: Specifies that for default `AllNamespaces` install mode usage, specify the `openshift-operators` namespace. Alternatively, you can specify a custom global namespace, if you have created one. For `SingleNamespace` install mode usage, specify the relevant single namespace.
+`metadata.namespace`:: Specifies the `openshift-operators` namespace for default `AllNamespaces` install mode usage. Alternatively, you can specify a custom global namespace, if you have created one. For `SingleNamespace` install mode usage, specify the relevant single namespace.
 `spec.channel`:: Specifies the name of the channel to subscribe to.
 `spec.name`:: Specifies the name of the Operator to subscribe to.
 `spec.source`:: Specifies the name of the catalog source that provides the Operator.
@@ -257,10 +257,8 @@ spec:
   startingCSV: example-operator.v3.7.10
 ----
 +
-where:
-
-`spec.installPlanApproval`:: Specifies the approval strategy to `Manual` in case your specified version is superseded by a later version in the catalog. This plan prevents an automatic upgrade to a later version and requires manual approval before the starting CSV can complete the installation.
-`spec.startingCSV`:: Specifies a specific version of an Operator CSV.
+**  Set the `spec.installPlanApproval` parameter to `Manual` in case your specified version is superseded by a later version in the catalog. This plan prevents an automatic upgrade to a later version and requires manual approval before the starting CSV can complete the installation.
+**  Set the `spec.startingCSV` parameter to define a specific version of an Operator CSV.
 +
 .. For clusters on cloud providers with token authentication enabled, such as {aws-first} {sts-first}, {entra-first}, or {gcp-wid-first}, configure your `Subscription` object by following these steps:
 +
@@ -293,6 +291,8 @@ spec:
       value: "<role_arn>"
 ----
 +
+where:
+
 `<role_arn>`:: Specifies the role ARN details.
 +
 If the cluster is in {entra-short} mode, include the following fields:
@@ -337,7 +337,7 @@ spec:
 +
 where:
 
-`<audience_url>`:: Specifies one of the following formats for the `AUDIENCE` value created in {gcp-short} by the administrator when they set up {gcp-wid-short}:
+`<audience_url>`:: Specifies the `AUDIENCE` value created in {gcp-short} by the administrator when they set up {gcp-wid-short}. The value must be a preformatted URL in the following format:
 +
 [source,text]
 ----

@@ -79,9 +79,9 @@ spec:
 ----
 ifndef::openshift-dedicated,openshift-rosa,openshift-rosa-hcp[]
 +
-Allows the cluster administrator to change the upgrade readiness to `True`.
+Setting the 'type' field to `Upgradeable` allows the cluster administrator to change the upgrade readiness to `True`.
 endif::openshift-dedicated,openshift-rosa,openshift-rosa-hcp[]
 ifdef::openshift-dedicated,openshift-rosa,openshift-rosa-hcp[]
 +
-Allows the `dedicated-admin` user to change the upgrade readiness to `True`.
+Setting the 'type' field to `Upgradeable` allows the `dedicated-admin` user to change the upgrade readiness to `True`.
 endif::openshift-dedicated,openshift-rosa,openshift-rosa-hcp[]
