@@ -46,26 +46,6 @@ endif::[]
 
 * You have installed the OpenShift CLI (`oc`).
 
-[TIP]
-====
-You can print an Operator's version and channel information in YAML format by running the following command:
-
-[source,terminal]
-----
-$ oc get packagemanifests <operator_name> -n <catalog_namespace> -o yaml
-----
-====
-
-[IMPORTANT]
-====
-You can only have one Operator group per namespace. For more information, see "Operator groups".
-====
-
-[NOTE]
-====
-If you want to subscribe to a specific version of an Operator, set the `startingCSV` field to the desired version and set the `installPlanApproval` field to `Manual` to prevent the Operator from automatically upgrading if a later version exists in the catalog. For details, see the following `Subscription` object with a specific starting Operator version.
-====
-
 .Procedure
 
 . View the list of Operators available to the cluster from the software catalog:
@@ -75,8 +55,7 @@ If you want to subscribe to a specific version of an Operator, set the `starting
 $ oc get packagemanifests -n openshift-marketplace
 ----
 +
-The following is example output:
-+
+.Example output
 [source,terminal]
 ----
 NAME                               CATALOG               AGE
@@ -103,8 +82,7 @@ Note the catalog for your desired Operator.
 $ oc describe packagemanifests <operator_name> -n openshift-marketplace
 ----
 +
-The following is example output:
-+
+.Example output
 [source,terminal]
 ----
 # ...
@@ -138,6 +116,16 @@ Kind:         PackageManifest
 <1> Indicates which install modes are supported.
 <2> Example channel names.
 <3> The channel selected by default if one is not specified.
++
+[TIP]
+====
+You can print an Operator's version and channel information in YAML format by running the following command:
+
+[source,terminal]
+----
+$ oc get packagemanifests <operator_name> -n <catalog_namespace> -o yaml
+----
+====
 
 . If more than one catalog is installed in a namespace, run the following command to look up the available versions and channels of an Operator from a specific catalog:
 +
@@ -161,10 +149,14 @@ If you do not specify the Operator's catalog, running the `oc get packagemanifes
 +
 If the Operator you intend to install supports the `SingleNamespace` install mode, and you choose to use this mode, you must ensure an appropriate Operator group exists in the related namespace. If one does not exist, you can create create one by following these steps:
 +
+[IMPORTANT]
+====
+You can only have one Operator group per namespace. For more information, see "Operator groups".
+====
++
 .. Create an `OperatorGroup` object YAML file, for example `operatorgroup.yaml`, for `SingleNamespace` install mode:
 +
-Use the following YAML for an `OperatorGroup` object in `SingleNamespace` install mode:
-+
+.Example `OperatorGroup` object for `SingleNamespace` install mode
 [source,yaml]
 ----
 apiVersion: operators.coreos.com/v1
@@ -189,8 +181,12 @@ $ oc apply -f operatorgroup.yaml
 +
 .. Create a YAML file for the `Subscription` object, for example `subscription.yaml`:
 +
-Use the following YAML for a `Subscription` object:
+[NOTE]
+====
+If you want to subscribe to a specific version of an Operator, set the `startingCSV` field to the desired version and set the `installPlanApproval` field to `Manual` to prevent the Operator from automatically upgrading if a later version exists in the catalog. For details, see the following "Example `Subscription` object with a specific starting Operator version".
+====
 +
+.Example `Subscription` object
 [source,yaml]
 ----
 apiVersion: operators.coreos.com/v1alpha1
@@ -242,8 +238,7 @@ spec:
 <11> The `resources` parameter defines resource constraints for all the containers in the pod created by OLM.
 <12> The `nodeSelector` parameter defines a `NodeSelector` for the pod created by OLM.
 +
-... Use the following YAML for a `Subscription` object with a specific starting Operator version:
-+
+.Example `Subscription` object with a specific starting Operator version
 [source,yaml]
 ----
 apiVersion: operators.coreos.com/v1alpha1
@@ -261,13 +256,12 @@ spec:
 ----
 <1> Set the approval strategy to `Manual` in case your specified version is superseded by a later version in the catalog. This plan prevents an automatic upgrade to a later version and requires manual approval before the starting CSV can complete the installation.
 <2> Set a specific version of an Operator CSV.
-
++
 .. For clusters on cloud providers with token authentication enabled, such as {aws-first} {sts-first}, {entra-first}, or {gcp-wid-first}, configure your `Subscription` object by following these steps:
 +
 ... Ensure the `Subscription` object is set to manual update approvals:
 +
-Use the following YAML for a `Subscription` object with manual update approvals:
-+
+.Example `Subscription` object with manual update approvals
 [source,yaml]
 ----
 kind: Subscription
@@ -279,10 +273,9 @@ spec:
 +
 ... Include the relevant cloud provider-specific fields in the `Subscription` object's `config` section:
 +
-.... If the cluster is in AWS STS mode, include the following fields:
+If the cluster is in AWS STS mode, include the following fields:
 +
-Use the following YAML for a `Subscription` object with {aws-short} {sts-short} variables:
-+
+.Example `Subscription` object with {aws-short} {sts-short} variables
 [source,yaml]
 ----
 kind: Subscription
@@ -295,10 +288,9 @@ spec:
 ----
 <1> Include the role ARN details.
 +
-.... If the cluster is in {entra-short} mode, include the following fields:
+If the cluster is in {entra-short} mode, include the following fields:
 +
-Use the following YAML for a `Subscription` object with {entra-short} variables:
-+
+.Example `Subscription` object with {entra-short} variables
 [source,yaml]
 ----
 kind: Subscription
@@ -317,10 +309,9 @@ spec:
 <2> Include the tenant ID.
 <3> Include the subscription ID.
 +
-.... If the cluster is in {gcp-wid-short} mode, include the following fields:
+If the cluster is in {gcp-wid-short} mode, include the following fields:
 +
-Use the following YAML for a `Subscription` object with {gcp-wid-short} variables:
-+
+.Example `Subscription` object with {gcp-wid-short} variables
 [source,yaml]
 ----
 kind: Subscription
