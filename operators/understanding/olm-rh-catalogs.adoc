@@ -16,10 +16,10 @@ The `opm` subcommands, flags, and functionality related to the SQLite database f
 
 Many of the `opm` subcommands and flags for working with the SQLite database format, such as `opm index prune`, do not work with the file-based catalog format.
 ifndef::openshift-dedicated,openshift-rosa,openshift-rosa-hcp[]
-For more information about working with file-based catalogs, see Managing custom catalogs, Operator Framework packaging format, and Mirroring images for a disconnected installation using the oc-mirror plugin documentation.
+For more information about working with file-based catalogs, see "Managing custom catalogs", "Operator Framework packaging format", and "Mirroring images for a disconnected installation using the oc-mirror plugin".
 endif::openshift-dedicated,openshift-rosa,openshift-rosa-hcp[]
 ifdef::openshift-dedicated,openshift-rosa,openshift-rosa-hcp[]
-For more information about working with file-based catalogs, see Managing custom catalogs and Operator Framework packaging format documentation.
+For more information about working with file-based catalogs, see "Managing custom catalogs" and "Operator Framework packaging format documentation".
 endif::openshift-dedicated,openshift-rosa,openshift-rosa-hcp[]
 ====
 
@@ -36,3 +36,8 @@ ifndef::openshift-dedicated,openshift-rosa,openshift-rosa-hcp[]
 endif::openshift-dedicated,openshift-rosa,openshift-rosa-hcp[]
 
 include::modules/olm-rh-catalogs.adoc[leveloffset=+1]
+
+[role="_additional-resources"]
+.Additional resources
+
+* link:https://github.com/redhat-openshift-ecosystem/community-operators-prod/tree/main/operators[Community Operators (GitHub)]
