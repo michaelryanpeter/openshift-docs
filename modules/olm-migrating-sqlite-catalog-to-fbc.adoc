@@ -7,7 +7,7 @@
 = Migrating SQLite database catalogs to the file-based catalog format
 
 [role="_abstract"]
-To move from the deprecated SQLite catalog format to file-based catalogs in {product-title}, you can use the `opm migrate` command to convert an existing catalog image.
+You can update your deprecated SQLite database format catalogs to the file-based catalog format by using the `opm migrate` command.
 
 .Prerequisites
 

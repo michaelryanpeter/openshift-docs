@@ -7,7 +7,7 @@ include::_attributes/common-attributes.adoc[]
 toc::[]
 
 [role="_abstract"]
-On disconnected {product-title} clusters, Operator Lifecycle Manager (OLM) cannot reach remote OperatorHub sources by default. You can mirror catalog content locally and configure OLM to install Operators from those mirrors.
+On disconnected {product-title} clusters, Operator Lifecycle Manager (OLM) cannot access the Red{nbsp}Hat-provided catalog sources hosted on remote registries by default. As a cluster administrator, you can use a workstation with full internet access to prepare local mirrors of the remote sources, and push the content to a mirror registry.
 
 The mirror registry can be located on a bastion host, which requires connectivity to both your workstation and the disconnected cluster, or a completely disconnected, or _airgapped_, host, which requires removable media to physically move the mirrored content to the disconnected environment.
 

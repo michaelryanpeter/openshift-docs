@@ -7,7 +7,7 @@ include::_attributes/common-attributes.adoc[]
 toc::[]
 
 [role="_abstract"]
-You can enable or disable Operator Lifecycle Manager (OLM) cluster features by editing the `OLMConfig` custom resource named `cluster` in {product-title}.
+Cluster administrators can enable or disable Operator Lifecycle Manager (OLM) cluster features by editing the `OLMConfig` custom resource (CR) named `cluster` in {product-title}.
 
 include::modules/olm-disabling-copied-csvs.adoc[leveloffset=+1]
 

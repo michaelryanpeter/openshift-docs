@@ -14,7 +14,7 @@ endif::[]
 = Creating a file-based catalog image
 
 [role="_abstract"]
-To build an Operator catalog for {product-title} in the file-based catalog format, you can use the `opm` CLI to initialize a catalog directory and generate a container image.
+You can use the `opm` CLI to create a catalog image that uses the plain text _file-based catalog_ format (JSON or YAML), which replaces the deprecated SQLite database format.
 
 .Prerequisites
 
