@@ -10,7 +10,7 @@ include::_attributes/common-attributes.adoc[]
 toc::[]
 
 [role="_abstract"]
-You can install OLM-based Operators on your {product-title} cluster by using Operator Lifecycle Manager (OLM). This assembly covers software catalog installation, multitenant setup, custom global namespaces, and pod placement.
+You can install OLM-based Operators on your {product-title} cluster by using Operator Lifecycle Manager (OLM).
 
 [NOTE]
 ====

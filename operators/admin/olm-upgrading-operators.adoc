@@ -7,7 +7,7 @@ include::_attributes/common-attributes.adoc[]
 toc::[]
 
 [role="_abstract"]
-You can update Operators previously installed with Operator Lifecycle Manager (OLM) on your {product-title} cluster. This assembly covers preparing for updates, changing update channels, and approving pending upgrades.
+You can update Operators previously installed with Operator Lifecycle Manager (OLM) on your {product-title} cluster.
 
 [NOTE]
 ====

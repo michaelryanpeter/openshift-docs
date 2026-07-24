@@ -7,7 +7,7 @@
 = Pod placement of Operator workloads
 
 [role="_abstract"]
-Operator Lifecycle Manager (OLM) places Operator and Operand pods on arbitrary worker nodes by default in {product-title}. You can steer pod placement to specific nodes by using projects with node selectors, taints, and tolerations.
+Operator Lifecycle Manager (OLM) places Operator and Operand pods on arbitrary worker nodes by default. You can steer pod placement to specific nodes by using projects with node selectors, taints, and tolerations.
 
 Controlling pod placement of Operator and Operand workloads has the following prerequisites:
 

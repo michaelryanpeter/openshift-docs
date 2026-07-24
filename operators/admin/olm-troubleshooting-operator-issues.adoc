@@ -9,7 +9,7 @@ include::_attributes/common-attributes.adoc[]
 toc::[]
 
 [role="_abstract"]
-You can troubleshoot Operator issues in {product-title} by checking subscription status, Operator pod health, and Operator logs. These diagnostics help you identify and resolve problems with Operators installed by Operator Lifecycle Manager (OLM).
+If you experience Operator issues, verify Operator subscription status. Check Operator pod health across the cluster and gather Operator logs for diagnosis.
 
 // Operator subscription condition types
 include::modules/olm-status-conditions.adoc[leveloffset=+1]

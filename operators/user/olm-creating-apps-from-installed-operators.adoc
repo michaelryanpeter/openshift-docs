@@ -7,6 +7,6 @@ include::_attributes/common-attributes.adoc[]
 toc::[]
 
 [role="_abstract"]
-You can create applications from installed Operators in {product-title} by using the web console. The included example deploys an etcd cluster from the etcd Operator.
+You can create applications from installed Operators by using the web console. The following example deploys an etcd cluster from the etcd Operator.
 
 include::modules/olm-creating-etcd-cluster-from-operator.adoc[leveloffset=+1]

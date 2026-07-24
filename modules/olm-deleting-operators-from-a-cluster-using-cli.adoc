@@ -8,7 +8,7 @@
 = Deleting Operators from a cluster using the CLI
 
 [role="_abstract"]
-To remove an installed Operator from a {product-title} namespace, you can delete its subscription and cluster service version (CSV) by using the CLI. You must remove the Operator completely before you reinstall it.
+To remove an installed Operator from a namespace, cluster administrators can delete its subscription and cluster service version (CSV) by using the CLI.
 
 .Prerequisites
 

@@ -7,7 +7,7 @@
 = Preparing for multiple instances of an Operator for multitenant clusters
 
 [role="_abstract"]
-To provide separate Operator instances for each tenant in a multitenant {product-title} cluster, you can install multiple instances of the same Operator in dedicated namespaces. This approach limits privileges compared with the *All namespaces* install mode.
+To provide separate Operator instances for each tenant in a multitenant {product-title} cluster, you can install multiple instances of the same Operator in dedicated namespaces.
 
 In the following procedure, the _tenant_ is a user or group of users that share common access and privileges for a set of deployed workloads. The _tenant Operator_ is the instance of an Operator that is intended for use by only that tenant.
 

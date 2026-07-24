@@ -7,7 +7,7 @@ include::_attributes/common-attributes.adoc[]
 toc::[]
 
 [role="_abstract"]
-You can delete Operators that were previously installed with Operator Lifecycle Manager (OLM) on your {product-title} cluster. Use the web console or CLI to remove subscriptions and cluster service versions.
+You can delete Operators that were previously installed with Operator Lifecycle Manager (OLM) on your {product-title} cluster.
 
 [IMPORTANT]
 ====
