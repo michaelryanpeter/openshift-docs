@@ -7,7 +7,7 @@
 = SQLite-based catalogs
 
 [role="_abstract"]
-SQLite-based Operator catalogs in {product-title} use index images that you create, update, and prune with the `opm` CLI. You can also configure catalog sources for compatibility with pod security admission standards.
+SQLite-based Operator catalogs in {product-title} use index images that you create, update, and prune with the `opm` CLI.
 
 :FeatureName: The SQLite database format for Operator catalogs
 include::snippets/deprecated-feature.adoc[]
