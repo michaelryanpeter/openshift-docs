@@ -1685,13 +1685,41 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="nodes-pods-plugins-about_manage-kernel-modules-across-cluster-nodes-deploy-device-plugins-alongside-kernel-modules.html">Understand device plugins</a>
 </li>
+<li><a href="explore-cluster-extension-capabilities-con_explore-cluster-extension-capabilities.html">Understand cluster extensions with OLM v1</a>
+</li>
+<li><a href="check-cluster-extension-support-con_check-cluster-extension-support.html">Review supported cluster extensions with OLM v1</a>
+</li>
 <li><a href="install-cluster-extensions-with-olmv1-con_install-cluster-extensions-with-olmv1.html"><span class="toc-current">Install cluster extensions with OLM v1</span></a>
 </li>
-<li><a href="manage-cluster-extensions-with-olmv1-con_manage-cluster-extensions-with-olmv1.html">Manage cluster extensions with OLM v1</a>
+<li><a href="configure-cluster-extensions-con_configure-cluster-extensions.html">Configure cluster extensions with OLM v1</a>
+</li>
+<li><a href="update-and-rollback-cluster-extensions-with-olmv1-con_update-and-rollback-cluster-extensions-with-olmv1.html">Update and roll back cluster extensions with OLM v1</a>
+</li>
+<li><a href="remove-cluster-extensions-with-olmv1-con_remove-cluster-extensions-with-olmv1.html">Remove cluster extensions with OLM v1</a>
+</li>
+<li><a href="control-access-to-cluster-extension-resources-with-olmv1-con_control-access-to-cluster-extension-resources-with-olmv1.html">Control access to cluster extension resources with OLM v1</a>
+</li>
+<li><a href="monitor-cluster-extensions-with-olmv1-con_monitor-cluster-extensions-with-olmv1.html">Monitor cluster extensions with OLM v1</a>
+</li>
+<li><a href="troubleshoot-cluster-extensions-with-olmv1-con_troubleshoot-cluster-extensions-with-olmv1.html">Troubleshoot cluster extensions with OLM v1</a>
+</li>
+<li><a href="understand-olmv0-resources-con_understand-operator-lifecycle-manager-concepts-and-resources.html">Understand Operator lifecycle management with OLM (Classic)</a>
 </li>
 <li><a href="install-operators-with-olmv0-con_install-operators-with-olmv0.html">Install Operators with OLM (Classic)</a>
 </li>
-<li><a href="manage-operators-with-olmv0-con_manage-operators-with-olmv0.html">Manage Operators with OLM (Classic)</a>
+<li><a href="update-installed-operators-con_update-installed-operators.html">Update installed Operators with OLM (Classic)</a>
+</li>
+<li><a href="ocp-map-delete-operators-from-a-cluster-intro_delete-operators-from-a-cluster.html">Delete Operators with OLM (Classic)</a>
+</li>
+<li><a href="ocp-map-create-applications-from-installed-operators-intro_create-applications-from-installed-operators.html">Create applications from Operators installed with OLM (Classic)</a>
+</li>
+<li><a href="ocp-map-configure-operator-lifecycle-manager-features-intro_configure-operator-lifecycle-manager-features.html">Configure OLM (Classic) features</a>
+</li>
+<li><a href="ocp-map-configure-operator-lifecycle-manager-proxy-support-intro_configure-operator-lifecycle-manager-proxy-support.html">Configure Operator proxy support with OLM (Classic)</a>
+</li>
+<li><a href="ocp-map-view-operator-status-intro_view-operator-status.html">Monitor Operators with OLM (Classic)</a>
+</li>
+<li><a href="ocp-map-troubleshoot-operator-issues-intro_troubleshoot-operator-issues.html">Troubleshoot Operators with OLM (Classic)</a>
 </li>
 <li><a href="prepare-catalogs-con_prepare-catalogs.html">Prepare catalogs</a>
 </li>
@@ -1919,7 +1947,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 </div>
-<aside id="navmap-right-toc" aria-label="On this page"><h2>On this page</h2><ul><li class="level-4"><a href="#olmv1-finding-operators-to-install_install-cluster-extensions-with-olmv1">Find Operators to install from a catalog</a></li><li class="level-4"><a href="#olmv1-creating-a-namespace_install-cluster-extensions-with-olmv1">Creating a namespace</a></li><li class="level-4"><a href="#olmv1-installing-an-operator_install-cluster-extensions-with-olmv1">Install a cluster extension in all namespaces</a></li><li class="level-4"><a href="#olmv1-deploying-a-ce-in-a-specific-namespace_install-cluster-extensions-with-olmv1">Configure a watch namespace for a cluster extension (Technology Preview)</a></li><li class="level-4"><a href="#check-cluster-extension-support-con_check-cluster-extension-support">Check cluster extension support</a></li><li class="level-5"><a href="#olmv1-about-supported-bundle-formats_check-cluster-extension-support">Supported bundle formats and dependencies</a></li><li class="level-5"><a href="#olmv1-webhook-support_check-cluster-extension-support">Webhook support</a></li></ul></aside>
+<aside id="navmap-right-toc" aria-label="On this page"><h2>On this page</h2><ul><li class="level-4"><a href="#olmv1-installing-an-operator_install-cluster-extensions-with-olmv1">Install a cluster extension in all namespaces</a></li></ul></aside>
 <div id="content">
 <div class="sect2">
 <h3 id="install-cluster-extensions-with-olmv1-con_install-cluster-extensions-with-olmv1">Install cluster extensions with OLM v1</h3>
@@ -1928,158 +1956,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="paragraph">
 <p>You use catalogs to access the versions, patches, and over-the-air updates for extensions and Operators. You use custom resources (CRs) to manage extensions declaratively from the CLI.</p>
-</div>
-<div class="sect3">
-<h4 id="olmv1-finding-operators-to-install_install-cluster-extensions-with-olmv1">Find Operators to install from a catalog</h4>
-<div class="paragraph _abstract">
-<p>After you add a catalog to your cluster, you can query the catalog to find Operators and extensions to install.</p>
-</div>
-<div class="paragraph">
-<p>Currently in Operator Lifecycle Manager (OLM) v1, you cannot query on-cluster catalogs managed by catalogd. In OLM v1, you must use the <code>opm</code> and <code>jq</code> CLI tools to query the catalog registry.</p>
-</div>
-<div class="ulist">
-<div class="title">Prerequisites</div>
-<ul>
-<li>
-<p>You have added a catalog to your cluster.</p>
-</li>
-<li>
-<p>You have installed the <code>jq</code> CLI tool.</p>
-</li>
-<li>
-<p>You have installed the <code>opm</code> CLI tool.</p>
-</li>
-</ul>
-</div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p>To return a list of extensions that support the <code>AllNamespaces</code> install mode and do not use webhooks, enter the following command:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ opm render &lt;catalog_registry_url&gt;:&lt;tag&gt; \
-  | jq -cs '[.[] | select(.schema == "olm.bundle" \
-  and (.properties[] | select(.type == "olm.csv.metadata").value.installModes[] \
-  | select(.type == "AllNamespaces" and .supported == true)) \
-  and .spec.webhookdefinitions == null) | .package] | unique[]'</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>where:</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"><code>catalog_registry_url</code></dt>
-<dd>
-<p>Specifies the URL of the catalog registry, such as <code>registry.redhat.io/redhat/redhat-operator-index</code>.</p>
-</dd>
-<dt class="hdlist1"><code>tag</code></dt>
-<dd>
-<p>Specifies the tag or version of the catalog, such as <code>v{product-version}</code> or <code>latest</code>.</p>
-<div class="listingblock">
-<div class="title">Example command</div>
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ opm render \
-  registry.redhat.io/redhat/redhat-operator-index:v{product-version} \
-  | jq -cs '[.[] | select(.schema == "olm.bundle" \
-  and (.properties[] | select(.type == "olm.csv.metadata").value.installModes[] \
-  | select(.type == "AllNamespaces" and .supported == true)) \
-  and .spec.webhookdefinitions == null) | .package] | unique[]'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Example output</div>
-<div class="content">
-<pre class="highlight"><code class="language-text" data-lang="text">"3scale-operator"
-"amq-broker-rhel8"
-"amq-online"
-"amq-streams"
-"amq-streams-console"
-"ansible-automation-platform-operator"
-"ansible-cloud-addons-operator"
-"apicast-operator"
-"authorino-operator"
-"aws-load-balancer-operator"
-"bamoe-kogito-operator"
-"cephcsi-operator"
-"cincinnati-operator"
-"cluster-logging"
-"cluster-observability-operator"
-"compliance-operator"
-"container-security-operator"
-"cryostat-operator"
-"datagrid"
-"devspaces"
-...</code></pre>
-</div>
-</div>
-</dd>
-</dl>
-</div>
-</li>
-<li>
-<p>Inspect the contents of an extension&#8217;s metadata by running the following command:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ opm render &lt;catalog_registry_url&gt;:&lt;tag&gt; \
-  | jq -s '.[] | select( .schema == "olm.package") \
-  | select( .name == "&lt;package_name&gt;")'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Example command</div>
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ opm render \
-  registry.redhat.io/redhat/redhat-operator-index:v{product-version} \
-  | jq -s '.[] | select( .schema == "olm.package") \
-  | select( .name == "openshift-pipelines-operator-rh")'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Example output</div>
-<div class="content">
-<pre class="highlight"><code class="language-text" data-lang="text">{
-  "schema": "olm.package",
-  "name": "openshift-pipelines-operator-rh",
-  "defaultChannel": "latest",
-  "icon": {
-    "base64data": "iVBORw0KGgoAAAANSUhE...",
-    "mediatype": "image/png"
-  }
-}</code></pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect3">
-<h4 id="olmv1-creating-a-namespace_install-cluster-extensions-with-olmv1">Creating a namespace</h4>
-<div class="paragraph _abstract">
-<p>Before you create a service account to install and manage your cluster extension, you must create a namespace.</p>
-</div>
-<div class="ulist">
-<div class="title">Prerequisites</div>
-<ul>
-<li>
-<p>Access to an Red&#160;Hat OpenShift Container Platform cluster using an account with <code>cluster-admin</code> permissions.</p>
-</li>
-</ul>
-</div>
-<div class="ulist">
-<div class="title">Procedure</div>
-<ul>
-<li>
-<p>Create a new namespace for the service account of the extension that you want to install by running the following command:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc adm new-project &lt;new_namespace&gt;</code></pre>
-</div>
-</div>
-</li>
-</ul>
-</div>
 </div>
 <div class="sect3">
 <h4 id="olmv1-installing-an-operator_install-cluster-extensions-with-olmv1">Install a cluster extension in all namespaces</h4>
@@ -2340,244 +2216,9 @@ metadata:
 </ol>
 </div>
 </div>
-<div class="sect3">
-<h4 id="olmv1-deploying-a-ce-in-a-specific-namespace_install-cluster-extensions-with-olmv1">Configure a watch namespace for a cluster extension (Technology Preview)</h4>
-<div class="paragraph _abstract">
-<p>You can configure the watch namespace for extensions that support namespace-scoped resource watching.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<img src="data:image/png;base64," alt="Important">
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Configuring watch namespace for a cluster extension is a Technology Preview feature only. Technology Preview features are not supported with Red&#160;Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.</p>
-</div>
-<div class="paragraph">
-<p>For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="ulist">
-<div class="title">Prerequisites</div>
-<ul>
-<li>
-<p>You have access to an Red&#160;Hat OpenShift Container Platform cluster using an account with <code>cluster-admin</code> permissions.</p>
-</li>
-<li>
-<p>You have enabled the <code>TechPreviewNoUpgrade</code> feature set on the cluster.</p>
-</li>
-<li>
-<p>You have created a service account and assigned enough role-based access controls (RBAC) to install, update, and manage the extension. For more information, see "Cluster extension permissions".</p>
-</li>
-<li>
-<p>You have verified the supported install modes for the extension and determined the required <code>watchNamespace</code> configuration.</p>
-</li>
-</ul>
-</div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p>Create a custom resource (CR) based on where you want the extension to watch for resources:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>To configure the extension to watch its own installation namespace:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: olm.operatorframework.io/v1
-kind: ClusterExtension
-metadata:
-  name: &lt;extension_name&gt;
-spec:
-  namespace: &lt;installation_namespace&gt;
-  config:
-    configType: Inline
-    inline:
-      watchNamespace: &lt;installation_namespace&gt;
-  serviceAccount:
-    name: &lt;service_account&gt;
-  source:
-    sourceType: Catalog
-    catalog:
-      packageName: &lt;package_name&gt;
-      version: &lt;version&gt;
-      upgradeConstraintPolicy: CatalogProvided</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>where:</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"><code>config.inline.watchNamespace</code></dt>
-<dd>
-<p>Specifies the namespace to watch for resources. For requirements and valid values, see "Extension configuration".</p>
-</dd>
-</dl>
-</div>
-</li>
-<li>
-<p>To configure the extension to watch a different namespace:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: olm.operatorframework.io/v1
-kind: ClusterExtension
-metadata:
-  name: &lt;extension_name&gt;
-spec:
-  namespace: &lt;installation_namespace&gt;
-  config:
-    configType: Inline
-    inline:
-      watchNamespace: &lt;watched_namespace&gt;
-  serviceAccount:
-    name: &lt;service_account&gt;
-  source:
-    sourceType: Catalog
-    catalog:
-      packageName: &lt;package_name&gt;
-      version: &lt;version&gt;
-      upgradeConstraintPolicy: CatalogProvided</code></pre>
-</div>
-</div>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Apply the CR to the cluster by running the following command:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc apply -f &lt;cluster_extension_cr&gt;.yaml</code></pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-<div class="ulist">
-<div class="title">Verification</div>
-<ul>
-<li>
-<p>Verify that the extension installed successfully by running the following command:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get clusterextension &lt;extension_name&gt; -o yaml</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Example output</div>
-<div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: olm.operatorframework.io/v1
-kind: ClusterExtension
-metadata:
-  name: &lt;extension_name&gt;
-spec:
-  namespace: &lt;installation_namespace&gt;
-  config:
-    configType: Inline
-    inline:
-      watchNamespace: &lt;installation_namespace&gt;
-status:
-  conditions:
-  - type: Installed
-    status: "True"
-    reason: Succeeded</code></pre>
-</div>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="check-cluster-extension-support-con_check-cluster-extension-support">Check cluster extension support</h4>
-<div class="paragraph _abstract">
-<p>To install an Operator as a cluster extension, it must meet bundle format, install mode, and dependency requirements. Operator Lifecycle Manager (OLM) v1 supports extensions that use webhooks for validation, mutation, or conversion.</p>
-</div>
-<div class="paragraph">
-<p>Operator Lifecycle Manager (OLM) v1 supports extensions that use the <code>AllNamespaces</code> install mode. With this mode, the Operator watches and manages resources across all namespaces in the cluster.</p>
-</div>
-<div class="paragraph">
-<p>As a Technology Preview feature, you can configure an extension to watch a specific namespace. This limits watching to one namespace instead of the entire cluster.</p>
-</div>
-<div class="sect4">
-<h5 id="olmv1-about-supported-bundle-formats_check-cluster-extension-support">Supported bundle formats and dependencies</h5>
-<div class="paragraph _abstract">
-<p>To install an Operator as a cluster extension, the Operator must be packaged using the <code>registry+v1</code> bundle format. OLM v1 does not support Operators that declare dependencies by using file-based catalog properties.</p>
-</div>
-<div class="paragraph">
-<p>To install an Operator as a cluster extension, it must meet the following criteria:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>The Operator is packaged using the <code>registry+v1</code> bundle format.</p>
-</li>
-<li>
-<p>The Operator does not declare dependencies by using the following file-based catalog properties:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><code>olm.gvk.required</code></p>
-</li>
-<li>
-<p><code>olm.package.required</code></p>
-</li>
-<li>
-<p><code>olm.constraint</code></p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>OLM v1 verifies that an Operator meets these requirements during installation. If an Operator does not meet these criteria, OLM v1 reports the issue in the cluster extension status conditions.</p>
-</div>
-<div class="paragraph">
-<p>Operator Lifecycle Manager (OLM) v1 does not support the <code>OperatorConditions</code> API introduced in OLM (Classic).</p>
-</div>
-<div class="paragraph">
-<p>If an extension relies on only the <code>OperatorConditions</code> API to manage updates, the extension might not install correctly. Most extensions that rely on this API fail at start time, but some might fail during reconciliation.</p>
-</div>
-<div class="paragraph">
-<p>As a workaround, you can pin your extension to a specific version. When you want to update your extension, consult the extension&#8217;s documentation to find out when it is safe to pin the extension to a new version.</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="olmv1-webhook-support_check-cluster-extension-support">Webhook support</h5>
-<div class="paragraph _abstract">
-<p>Operator Lifecycle Manager (OLM) v1 supports Operators that use webhooks for validation, mutation, or conversion. Operators use webhooks to enforce security policies or inject configurations into resources.</p>
-</div>
-<div class="paragraph">
-<p>The OpenShift Service CA Operator automatically manages webhook certificates. When you install an Operator that includes webhooks, the OpenShift Service CA Operator completes the following actions:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Applies Service CA annotations to webhook configurations and services.</p>
-</li>
-<li>
-<p>Generates TLS certificates in the namespace where you install the cluster extension.</p>
-</li>
-<li>
-<p>Mounts certificate secrets to the Operator deployment.</p>
-</li>
-<li>
-<p>Configures webhook services with proper TLS settings.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
 </div>
 <div class="paragraph nav-footer">
-<p>← Previous: <a href="nodes-pods-plugins-about_manage-kernel-modules-across-cluster-nodes-deploy-device-plugins-alongside-kernel-modules.html">Understand device plugins</a> | ↑ Up: <a href="_extend.html">Extend</a> | ⌂ Home: <a href="navigation.html">Red Hat OpenShift Container Platform</a> | Next: <a href="manage-cluster-extensions-with-olmv1-con_manage-cluster-extensions-with-olmv1.html">Manage cluster extensions with OLM v1</a> →</p>
+<p>← Previous: <a href="check-cluster-extension-support-con_check-cluster-extension-support.html">Review supported cluster extensions with OLM v1</a> | ↑ Up: <a href="_extend.html">Extend</a> | ⌂ Home: <a href="navigation.html">Red Hat OpenShift Container Platform</a> | Next: <a href="configure-cluster-extensions-con_configure-cluster-extensions.html">Configure cluster extensions with OLM v1</a> →</p>
 </div>
 </div>
 <div id="footnotes">
@@ -2588,7 +2229,7 @@ status:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-10-13 18:51:19 -0400
+Last updated 2026-10-14 13:37:42 -0400
 </div>
 </div>
 <style>
