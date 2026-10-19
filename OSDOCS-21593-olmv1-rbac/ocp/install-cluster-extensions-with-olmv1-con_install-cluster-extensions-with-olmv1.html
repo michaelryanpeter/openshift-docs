@@ -1821,7 +1821,7 @@ How to fix these errors:
 </ul>
 </div>
 </div>
-<aside id="navmap-right-toc" aria-label="On this page"><h2>On this page</h2><ul><li class="level-4"><a href="#olmv1-cluster-extension-permissions_install-cluster-extensions-with-olmv1">Cluster extension permissions</a></li><li class="level-4"><a href="#olmv1-creating-a-namespace_install-cluster-extensions-with-olmv1">Create an installation namespace</a></li><li class="level-4"><a href="#olmv1-installing-an-operator_install-cluster-extensions-with-olmv1">Install a cluster extension in all namespaces</a></li><li class="level-4"><a href="#olmv1-downloading-bundle-manifests_install-cluster-extensions-with-olmv1">Downloading the bundle manifests of an extension</a></li><li class="level-4"><a href="#olmv1-delegating-extension-management_install-cluster-extensions-with-olmv1">Delegate management of an approved cluster extension</a></li></ul></aside>
+<aside id="navmap-right-toc" aria-label="On this page"><h2>On this page</h2><ul><li class="level-4"><a href="#olmv1-cluster-extension-permissions_install-cluster-extensions-with-olmv1">Cluster extension permissions</a></li><li class="level-4"><a href="#olmv1-installing-an-operator_install-cluster-extensions-with-olmv1">Install a cluster extension in all namespaces</a></li><li class="level-4"><a href="#olmv1-delegating-extension-management_install-cluster-extensions-with-olmv1">Delegate management of an approved cluster extension</a></li></ul></aside>
 <div id="content">
 <div class="sect2">
 <h3 id="install-cluster-extensions-with-olmv1-con_install-cluster-extensions-with-olmv1">Install cluster extensions with OLM v1</h3>
@@ -1863,33 +1863,6 @@ How to fix these errors:
 </div>
 <div class="paragraph">
 <p>Keep write access to <code>ClusterObjectSet</code> resources restricted to cluster administrators. A policy that validates <code>ClusterExtension</code> requests does not validate direct writes to <code>ClusterObjectSet</code> resources.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="olmv1-creating-a-namespace_install-cluster-extensions-with-olmv1">Create an installation namespace</h4>
-<div class="paragraph _abstract">
-<p>Create an installation namespace before you install a cluster extension. The extension manifest identifies this namespace in the <code>spec.namespace</code> field.</p>
-</div>
-<div class="ulist">
-<div class="title">Prerequisites</div>
-<ul>
-<li>
-<p>Access to an Red&#160;Hat OpenShift Container Platform cluster by using an account with <code>cluster-admin</code> permissions.</p>
-</li>
-</ul>
-</div>
-<div class="ulist">
-<div class="title">Procedure</div>
-<ul>
-<li>
-<p>Create the installation namespace by running the following command:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc adm new-project &lt;new_namespace&gt;</code></pre>
-</div>
-</div>
-</li>
-</ul>
 </div>
 </div>
 <div class="sect3">
@@ -2033,103 +2006,6 @@ spec:
 </div>
 <div class="paragraph">
 <p>If the <code>Deprecated</code> condition is <code>True</code>, review its message for details about the deprecated package, channel, or bundle.</p>
-</div>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect3">
-<h4 id="olmv1-downloading-bundle-manifests_install-cluster-extensions-with-olmv1">Downloading the bundle manifests of an extension</h4>
-<div class="paragraph _abstract">
-<p>Download an extension&#8217;s bundle manifests with the <code>opm</code> CLI tool. Review its resources and runtime permissions before approving it for installation.</p>
-</div>
-<div class="ulist">
-<div class="title">Prerequisites</div>
-<ul>
-<li>
-<p>You have access to an Red&#160;Hat OpenShift Container Platform cluster by using an account with <code>cluster-admin</code> permissions.</p>
-</li>
-<li>
-<p>You have decided which extension you want to install.</p>
-</li>
-<li>
-<p>You have installed the <code>opm</code> CLI tool.</p>
-</li>
-</ul>
-</div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p>Inspect the available versions and images of the extension you want to install by running the following command:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ opm render &lt;registry_url&gt;:&lt;tag_or_version&gt; | \
-  jq -cs '.[] | select( .schema == "olm.bundle" ) | \
-  select( .package == "&lt;extension_name&gt;") | \
-  {"name":.name, "image":.image}'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Example command</div>
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ opm render registry.redhat.io/redhat/redhat-operator-index:v{product-version} | \
-  jq -cs '.[] | select( .schema == "olm.bundle" ) | \
-  select( .package == "openshift-pipelines-operator-rh") | \
-  {"name":.name, "image":.image}'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Example output</div>
-<div class="content">
-<pre class="highlight"><code class="language-text" data-lang="text">{"name":"openshift-pipelines-operator-rh.v1.14.5","image":"registry.redhat.io/openshift-pipelines/pipelines-operator-bundle@sha256:f7b19ce26be742c4aaa458d37bc5ad373b5b29b20aaa7d308349687d3cbd8838"}</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Make a directory to extract the image of the bundle that you want to install by running the following command:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ mkdir &lt;new_dir&gt;</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Change into the directory by running the following command:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ cd &lt;new_dir&gt;</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Find the image reference of the version that you want to install and run the following command:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc image extract &lt;full_path_to_registry_image&gt;@sha256:&lt;sha&gt;</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Example command</div>
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc image extract registry.redhat.io/openshift-pipelines/pipelines-operator-bundle@sha256:f7b19ce26be742c4aaa458d37bc5ad373b5b29b20aaa7d308349687d3cbd8838</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Change into the <code>manifests</code> directory by running the following command:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ cd manifests</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>View the contents of the manifests directory by entering the following command. The output lists the manifests of the resources required to install, manage, and operate your extension.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ tree</code></pre>
-</div>
 </div>
 </li>
 </ol>
@@ -2410,7 +2286,7 @@ spec:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-10-19 13:05:11 -0400
+Last updated 2026-10-19 14:27:40 -0400
 </div>
 </div>
 <style>

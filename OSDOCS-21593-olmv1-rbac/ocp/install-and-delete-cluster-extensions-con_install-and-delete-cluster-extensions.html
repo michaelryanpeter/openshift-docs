@@ -1821,7 +1821,7 @@ How to fix these errors:
 </ul>
 </div>
 </div>
-<aside id="navmap-right-toc" aria-label="On this page"><h2>On this page</h2><ul><li class="level-4"><a href="#olmv1-finding-operators-to-install_install-and-delete-cluster-extensions">Find Operators to install from a catalog</a></li><li class="level-4"><a href="#olmv1-cluster-extension-permissions_install-and-delete-cluster-extensions">Cluster extension permissions</a></li><li class="level-5"><a href="#olmv1-creating-a-namespace_install-and-delete-cluster-extensions">Create an installation namespace</a></li><li class="level-4"><a href="#olmv1-installing-an-operator_install-and-delete-cluster-extensions">Install a cluster extension in all namespaces</a></li><li class="level-4"><a href="#olmv1-deploying-a-ce-in-a-specific-namespace_install-and-delete-cluster-extensions">Configure a watch namespace for a cluster extension (Technology Preview)</a></li><li class="level-4"><a href="#olmv1-deleting-an-operator_install-and-delete-cluster-extensions">Deleting an Operator</a></li></ul></aside>
+<aside id="navmap-right-toc" aria-label="On this page"><h2>On this page</h2><ul><li class="level-4"><a href="#olmv1-finding-operators-to-install_install-and-delete-cluster-extensions">Find Operators to install from a catalog</a></li><li class="level-4"><a href="#olmv1-cluster-extension-permissions_install-and-delete-cluster-extensions">Cluster extension permissions</a></li><li class="level-5"><a href="#olmv1-creating-a-namespace_install-and-delete-cluster-extensions">Create an installation namespace</a></li><li class="level-4"><a href="#olmv1-installing-an-operator_install-and-delete-cluster-extensions">Install a cluster extension in all namespaces</a></li><li class="level-4"><a href="#olmv1-deploying-a-ce-in-a-specific-namespace_install-and-delete-cluster-extensions">Configure a watch namespace for a cluster extension (Technology Preview)</a></li><li class="level-4"><a href="#olmv1-deleting-an-operator_install-and-delete-cluster-extensions">Deleting an Operator</a></li><li class="level-4"><a href="#olmv1-delegating-extension-management_install-and-delete-cluster-extensions">Delegate management of an approved cluster extension</a></li></ul></aside>
 <div id="content">
 <div class="sect2">
 <h3 id="install-and-delete-cluster-extensions-con_install-and-delete-cluster-extensions">Install and delete cluster extensions</h3>
@@ -2318,6 +2318,268 @@ spec:
 </ul>
 </div>
 </div>
+<div class="sect3">
+<h4 id="olmv1-delegating-extension-management_install-and-delete-cluster-extensions">Delegate management of an approved cluster extension</h4>
+<div class="paragraph _abstract">
+<p>To delegate installation of an approved extension, combine RBAC with a validating admission policy.</p>
+</div>
+<div class="paragraph">
+<p>This example grants the <code>team-pipelines</code> group access to the <code>pipelines-operator</code> extension. Members can install one approved version of the Red Hat OpenShift Pipelines Operator from the <code>openshift-redhat-operators</code> catalog into the <code>pipelines</code> namespace.</p>
+</div>
+<div class="paragraph">
+<p>Use this example with the default feature set. If you enable features that expose <code>spec.config</code>, extend and verify the policy to restrict those configuration fields before delegating access. The example policy does not restrict deployment customization or watch-namespace configuration.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You have access to the cluster by using an account with <code>cluster-admin</code> permissions and have installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>The <code>team-pipelines</code> group exists and includes the users who require access.</p>
+</li>
+<li>
+<p>You have reviewed the bundle content and selected an available, supported version of the <code>openshift-pipelines-operator-rh</code> package in the <code>openshift-redhat-operators</code> catalog.</p>
+</li>
+<li>
+<p>The <code>pipelines</code> namespace exists.</p>
+</li>
+<li>
+<p>You have reviewed the RBAC grants for the group. It has no existing write access to <code>ClusterExtension</code> or <code>ClusterObjectSet</code> resources, catalogs, or admission policies. RBAC permissions are additive; this procedure does not revoke existing permissions.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Save the following policy and binding as <code>pipelines-extension-policy.yaml</code>. Replace <code>&lt;approved_version&gt;</code> with the exact version that you approved:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: pipelines-extension-policy
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["olm.operatorframework.io"]
+        apiVersions: ["v1"]
+        resources: ["clusterextensions"]
+        operations: ["CREATE", "UPDATE"]
+  matchConditions:
+    - name: team-pipelines
+      expression: &gt;-
+        request.userInfo.groups.exists(g, g == "team-pipelines")
+  validations:
+    - expression: object.metadata.name == "pipelines-operator"
+      message: "Only the pipelines-operator extension is permitted."
+    - expression: object.spec.namespace == "pipelines"
+      message: "The installation namespace must be pipelines."
+    - expression: &gt;-
+        object.spec.source.sourceType == "Catalog" &amp;&amp;
+        has(object.spec.source.catalog) &amp;&amp;
+        has(object.spec.source.catalog.selector) &amp;&amp;
+        has(object.spec.source.catalog.selector.matchLabels) &amp;&amp;
+        "olm.operatorframework.io/metadata.name" in object.spec.source.catalog.selector.matchLabels &amp;&amp;
+        object.spec.source.catalog.selector.matchLabels["olm.operatorframework.io/metadata.name"] == "openshift-redhat-operators"
+      message: "Select the openshift-redhat-operators catalog by its name label."
+    - expression: &gt;-
+        has(object.spec.source.catalog) &amp;&amp;
+        object.spec.source.catalog.packageName == "openshift-pipelines-operator-rh" &amp;&amp;
+        has(object.spec.source.catalog.version) &amp;&amp;
+        object.spec.source.catalog.version == "&lt;approved_version&gt;"
+      message: "Specify the approved Pipelines package and exact version."
+    - expression: &gt;-
+        !has(object.spec.source.catalog) ||
+        !has(object.spec.source.catalog.upgradeConstraintPolicy) ||
+        object.spec.source.catalog.upgradeConstraintPolicy != "SelfCertified"
+      message: "Catalog upgrade constraints must remain enabled."
+    - expression: &gt;-
+        !has(object.spec.install) ||
+        !has(object.spec.install.preflight) ||
+        !has(object.spec.install.preflight.crdUpgradeSafety) ||
+        object.spec.install.preflight.crdUpgradeSafety.enforcement != "None"
+      message: "CRD upgrade safety checks must remain enabled."
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: pipelines-extension-policy
+spec:
+  policyName: pipelines-extension-policy
+  validationActions: ["Deny"]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>where:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>ValidatingAdmissionPolicy</code></dt>
+<dd>
+<p>Checks create and update requests from the <code>team-pipelines</code> group. It restricts the extension name, installation namespace, catalog, package, and version. It also prevents disabling upgrade safeguards.</p>
+</dd>
+<dt class="hdlist1"><code>ValidatingAdmissionPolicyBinding</code></dt>
+<dd>
+<p>Activates the policy and denies requests that fail validation.</p>
+<div class="paragraph">
+<p>To approve an update later, review the new bundle and update the version in the policy before the group updates the extension.</p>
+</div>
+</dd>
+</dl>
+</div>
+</li>
+<li>
+<p>Apply the policy and binding by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc apply -f pipelines-extension-policy.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check the policy before granting access by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get validatingadmissionpolicy pipelines-extension-policy -o yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Verify that <code>status.observedGeneration</code> matches <code>metadata.generation</code> and that <code>status.typeChecking.expressionWarnings</code> is empty. Resolve any expression warnings before continuing.</p>
+</div>
+</li>
+<li>
+<p>Save the following role and binding as <code>pipelines-extension-rbac.yaml</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pipelines-extension-manager
+rules:
+  - apiGroups: ["olm.operatorframework.io"]
+    resources: ["clusterextensions"]
+    verbs: ["create"]
+  - apiGroups: ["olm.operatorframework.io"]
+    resources: ["clusterextensions"]
+    resourceNames: ["pipelines-operator"]
+    verbs: ["get", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pipelines-extension-manager
+subjects:
+  - kind: Group
+    name: team-pipelines
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: pipelines-extension-manager
+  apiGroup: rbac.authorization.k8s.io</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>where:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>ClusterRole</code></dt>
+<dd>
+<p>Grants creation access and limits other actions to the <code>pipelines-operator</code> resource. Kubernetes RBAC cannot restrict creation by resource name, so the admission policy enforces that restriction.</p>
+</dd>
+<dt class="hdlist1"><code>ClusterRoleBinding</code></dt>
+<dd>
+<p>Grants the role to the same group that the admission policy matches.</p>
+</dd>
+</dl>
+</div>
+</li>
+<li>
+<p>Grant the group access by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc apply -f pipelines-extension-rbac.yaml</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="olist arabic">
+<div class="title">Verification</div>
+<ol class="arabic">
+<li>
+<p>Save the following manifest as <code>pipelines-operator.yaml</code>. Replace <code>&lt;approved_version&gt;</code> with the same version used in the policy:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: olm.operatorframework.io/v1
+kind: ClusterExtension
+metadata:
+  name: pipelines-operator
+spec:
+  namespace: pipelines
+  source:
+    sourceType: Catalog
+    catalog:
+      packageName: openshift-pipelines-operator-rh
+      version: "&lt;approved_version&gt;"
+      selector:
+        matchLabels:
+          olm.operatorframework.io/metadata.name: openshift-redhat-operators</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Test an allowed request without installing the extension by running the following command as a cluster administrator:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc --as=alice --as-group=team-pipelines apply \
+  --dry-run=server -f pipelines-operator.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The request succeeds. The <code>--as</code> and <code>--as-group</code> flags impersonate a user and group for this test; they do not create a user or add group membership.</p>
+</div>
+</li>
+<li>
+<p>Change the <code>spec.source.catalog.version</code> value in a copy of the manifest to a different valid version. Repeat the dry-run command with that file.</p>
+<div class="paragraph">
+<p>The request fails with the admission policy message <code>Specify the approved Pipelines package and exact version.</code> If it succeeds, check the policy binding and group match before permitting users to proceed.</p>
+</div>
+</li>
+<li>
+<p>Verify that the group cannot create <code>ClusterObjectSet</code> resources by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc --as=alice --as-group=team-pipelines auth can-i \
+  create clusterobjectsets.olm.operatorframework.io</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The expected response is <code>no</code>. If the response is <code>yes</code>, review existing RBAC grants before delegating extension management.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="ulist">
+<div class="title">Next steps</div>
+<ul>
+<li>
+<p>Members of <code>team-pipelines</code> can apply the approved <code>pipelines-operator.yaml</code> manifest while logged in with their own accounts. Server-side dry-run verifies admission; it does not verify bundle resolution or successful installation.</p>
+</li>
+<li>
+<p>To revoke access, remove the group binding before removing the policy by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc delete clusterrolebinding pipelines-extension-manager</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
 </div>
 <div class="paragraph nav-footer">
 <p>↑ Up: <a href="_extend.html">Extend</a> | ⌂ Home: <a href="navigation.html">Red Hat OpenShift Container Platform</a> | Next: <a href="add-nodes-to-the-cluster-con_add-nodes-to-the-cluster.html">Add nodes to the cluster</a> →</p>
@@ -2331,7 +2593,7 @@ spec:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-10-19 13:05:11 -0400
+Last updated 2026-10-19 14:27:40 -0400
 </div>
 </div>
 <style>
